@@ -21,6 +21,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // Spring x Doma
+    implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.5.0")
+    // Doma
+    implementation("org.seasar.doma:doma:2.24.0")
+
+    // PostgewSQL
+    implementation("org.postgresql:postgresql")
 }
 
 tasks.withType<KotlinCompile> {
