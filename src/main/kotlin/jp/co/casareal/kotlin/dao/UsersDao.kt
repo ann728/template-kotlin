@@ -11,6 +11,6 @@ import org.seasar.doma.boot.ConfigAutowireable
 interface UsersDao {
 
     @Select
-//    @Sql("select * from users where login_user = /* login_user */'1'")
+    @Sql("select * from users where login_user = /* login_user */'1'")
     fun findByLoginUser(login_user : String): Users?
 }

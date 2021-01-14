@@ -41,8 +41,8 @@ dependencies {
     // Spring x Doma
     implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.5.0")
     // Doma
-    implementation("org.seasar.doma:doma:2.24.0")
-    kapt("org.seasar.doma:doma:2.24.0")
+    kapt("org.seasar.doma:doma-processor:2.44.3")
+    implementation("org.seasar.doma:doma-kotlin:2.44.3")
 
     // PostgewSQL
     implementation("org.postgresql:postgresql")
@@ -53,24 +53,7 @@ dependencies {
     implementation("org.webjars:font-awesome:5.15.1")
 }
 
-val compileKotlin: KotlinCompile by tasks
-
-kapt {
-    arguments {
-        arg("doma.resources.dir", compileKotlin.destinationDir)
-    }
-}
-
-tasks.register("copyDomaResources",Sync::class){
-    from("src/main/resources")
-    into(compileKotlin.destinationDir)
-    include("doma.compile.config")
-    include("META-INF/**/*.sql")
-    include("META-INF/**/*.script")
-}
-
 tasks.withType<KotlinCompile> {
-    dependsOn(tasks.getByName("copyDomaResources"))
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"
