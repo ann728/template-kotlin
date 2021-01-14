@@ -15,6 +15,7 @@ java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
+    maven("https://oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -52,7 +53,24 @@ dependencies {
     implementation("org.webjars:font-awesome:5.15.1")
 }
 
+val compileKotlin: KotlinCompile by tasks
+
+kapt {
+    arguments {
+        arg("doma.resources.dir", compileKotlin.destinationDir)
+    }
+}
+
+tasks.register("copyDomaResources",Sync::class){
+    from("src/main/resources")
+    into(compileKotlin.destinationDir)
+    include("doma.compile.config")
+    include("META-INF/**/*.sql")
+    include("META-INF/**/*.script")
+}
+
 tasks.withType<KotlinCompile> {
+    dependsOn(tasks.getByName("copyDomaResources"))
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "11"

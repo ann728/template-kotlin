@@ -10,6 +10,6 @@ import org.seasar.doma.experimental.Sql
 interface IndexDao {
 
     @Select
-    @Sql("select name from index where id=1")
+//    @Sql("select name from index where id=1")
     fun index(): String
 }
