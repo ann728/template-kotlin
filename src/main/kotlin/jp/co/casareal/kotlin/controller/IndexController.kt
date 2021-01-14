@@ -14,7 +14,7 @@ class IndexController(@Autowired val indexService: IndexService) {
 
     @GetMapping("", "/")
     fun index() : String {
-        logger.debug("### test")
+        logger.debug("### index")
 
         logger.debug("### name:" + indexService.index())
 

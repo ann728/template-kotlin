@@ -18,12 +18,23 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
+    // json
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // Thymeleaf
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.4.1")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
+
+    // Spring Security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-test")
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // Spring x Doma
@@ -34,6 +45,11 @@ dependencies {
 
     // PostgewSQL
     implementation("org.postgresql:postgresql")
+
+    // Webjars
+    implementation("org.webjars:jquery:3.5.1")
+    implementation("org.webjars:bootstrap:4.5.3")
+    implementation("org.webjars:font-awesome:5.15.1")
 }
 
 tasks.withType<KotlinCompile> {
