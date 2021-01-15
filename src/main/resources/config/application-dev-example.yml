@@ -10,13 +10,6 @@ spring:
   devtools:
     restart:
       enabled
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
-  messages:
-    basename: i18n/messages
-    encoding: UTF-8
 
 logging:
   level:
