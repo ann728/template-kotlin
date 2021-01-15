@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.lang.Exception
 
 @Service
 @Transactional(readOnly = true)
@@ -14,7 +15,11 @@ class AuthService(
     private val usersDao: UsersDao
 ): UserDetailsService {
 
-    override fun loadUserByUsername(username: String): UserDetails {
+    override fun loadUserByUsername(username: String?): UserDetails {
+
+        if (username.isNullOrBlank()) {
+            throw Exception("")
+        }
 
         val users = usersDao.findByLoginUser(username) ?: throw  UsernameNotFoundException("not found")
 

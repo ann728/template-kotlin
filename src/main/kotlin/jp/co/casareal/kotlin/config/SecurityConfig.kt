@@ -5,43 +5,51 @@ import jp.co.casareal.kotlin.service.AuthService
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 
 @Configuration
 class SecurityConfig(
     private val authService: AuthService
 ): WebSecurityConfigurerAdapter() {
 
-    override fun configure(web: WebSecurity) {
-        web.ignoring()
-            .mvcMatchers(
+    @Throws(Exception::class)
+    override fun configure(http: HttpSecurity) {
+        http.authorizeRequests()
+            .antMatchers(
                 "/css/**",
                 "/js/**",
                 "/img/**",
                 "/webjars/**",
-                "/favicon.ico")
-    }
-
-    override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .mvcMatchers("/").permitAll()
-            .mvcMatchers("/menu").hasAuthority(RoleCd.ADMIN.cd)
+                "/favicon.ico",
+                "/login/**",
+                "/"
+            ).permitAll()
+            .antMatchers("/menu").hasAuthority(RoleCd.ADMIN.cd)
             .anyRequest().authenticated()
 
             /* ログイン設定 */
             .and()
             .formLogin()
-            .defaultSuccessUrl("/", false)
+            .loginPage("/login")
+            .loginProcessingUrl("/login/auth")
+            .defaultSuccessUrl("/menu", true)
+            .failureUrl("/login")
+            .usernameParameter("username")
+            .passwordParameter("password")
 
             /* ログアウト設定 */
             .and()
             .logout()
-            .logoutUrl("/logout")
-            .logoutSuccessUrl("/")
+            .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
+            .logoutSuccessUrl("/login")
+            .deleteCookies("JSESSIONID")
+            .invalidateHttpSession(true)
+            .permitAll()
     }
 
+    @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(authService)
             .passwordEncoder(BCryptPasswordEncoder())

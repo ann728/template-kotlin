@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, height=device-height">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no">
+    <link th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/font-awesome/5.15.1/css/all.min.css}" rel="stylesheet" />
+    <title>ログイン</title>
+</head>
+<body>
+<div id="main" class="relative login">
+    <div class="container">
+        <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-10 offset-1">
+            <h3 class="text-center">ログイン</h3>
+            <form method="post" th:action="@{'/login/auth'}">
+                <div class="form-group text-center">
+                    <div class="" th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null">
+                        <div class="login_error" th:text="入力されたID、パスワードは不正です">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mx-5">
+                    <input class="form-control" placeholder="ログインID" required="required" th:name="username" type="text">
+                </div>
+                <div class="form-group mx-5">
+                    <input class="form-control" placeholder="パスワード" required="required" th:name="password"  type="password">
+                </div>
+                <div class="form-group">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-primary" type="submit">ログイン</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.5.3/js/bootstrap.min.js}"></script>
+<script type="text/javascript">
+</script>
+</body>
+</html>
