@@ -49,8 +49,8 @@ class SecurityConfig(
             .logout()
             .logoutRequestMatcher(AntPathRequestMatcher("/logout"))
             .logoutSuccessUrl("/login")
-            .deleteCookies("JSESSIONID")
-            .invalidateHttpSession(true)
+            .deleteCookies("JSESSIONID") // クッキー削除
+            .invalidateHttpSession(true) // HttpSessionを破棄
 
             /* セッション管理 */
             .and()
