@@ -27,11 +27,10 @@ class SecurityConfig(
                 "/favicon.ico")
     }
 
-    @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
             .mvcMatchers("/", "/login").permitAll()
-            .antMatchers("/menu").hasAuthority(RoleCd.ADMIN.cd)
+            .mvcMatchers("/menu").hasAuthority(RoleCd.ADMIN.cd)
             .anyRequest().authenticated()
 
             /* ログイン設定 */
@@ -60,7 +59,6 @@ class SecurityConfig(
             .maxSessionsPreventsLogin(true) // true:先勝ち、false:後勝ち
     }
 
-    @Throws(Exception::class)
     override fun configure(auth: AuthenticationManagerBuilder) {
         auth.userDetailsService(authService)
             .passwordEncoder(BCryptPasswordEncoder())
