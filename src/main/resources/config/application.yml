@@ -1,13 +1,10 @@
 server:
   servlet:
     session:
-      timeout: 30m
+      timeout: 30M
 
 spring:
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
-  messages:
-    basename: i18n/messages
-    encoding: UTF-8

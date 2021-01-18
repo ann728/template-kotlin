@@ -15,13 +15,11 @@
     <div class="container">
         <div class="col-lg-4 offset-lg-4 col-md-6 offset-md-3 col-sm-8 offset-sm-2 col-10 offset-1">
             <h3 class="text-center">ログイン</h3>
+            <div class="form-group text-center">
+                <p th:if="${session.SPRING_SECURITY_LAST_EXCEPTION}"
+                   th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}">aaa</p>
+            </div>
             <form method="post" th:action="@{'/login/auth'}">
-                <div class="form-group text-center">
-                    <div class="" th:if="${session['SPRING_SECURITY_LAST_EXCEPTION']} != null">
-                        <div class="login_error" th:text="入力されたID、パスワードは不正です">
-                        </div>
-                    </div>
-                </div>
                 <div class="form-group mx-5">
                     <input class="form-control" placeholder="ログインID" required="required" th:name="username" type="text">
                 </div>

@@ -1,0 +1,2 @@
+## spring-security-core-5.4.2.jar!/org/springframework/security/messages.properties
+AbstractUserDetailsAuthenticationProvider.badCredentials: 入力されたログインID、パスワードは不正です
