@@ -51,6 +51,13 @@ class SecurityConfig(
             .logoutSuccessUrl("/login")
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true)
+
+            /* セッション管理 */
+            .and()
+            .sessionManagement()
+            .maximumSessions(1) // セッション数指定
+            .expiredUrl("/login") // エラー画面設定
+            .maxSessionsPreventsLogin(true) // true:先勝ち、false:後勝ち
     }
 
     @Throws(Exception::class)
