@@ -5,6 +5,7 @@ import jp.co.casareal.kotlin.service.AuthService
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
@@ -14,18 +15,20 @@ class SecurityConfig(
     private val authService: AuthService
 ): WebSecurityConfigurerAdapter() {
 
-    @Throws(Exception::class)
-    override fun configure(http: HttpSecurity) {
-        http.authorizeRequests()
-            .antMatchers(
+    override fun configure(web: WebSecurity) {
+        web.ignoring()
+            .mvcMatchers(
                 "/css/**",
                 "/js/**",
                 "/img/**",
                 "/webjars/**",
-                "/favicon.ico",
-                "/login/**",
-                "/"
-            ).permitAll()
+                "/favicon.ico")
+    }
+
+    @Throws(Exception::class)
+    override fun configure(http: HttpSecurity) {
+        http.authorizeRequests()
+            .mvcMatchers("/", "/login").permitAll()
             .antMatchers("/menu").hasAuthority(RoleCd.ADMIN.cd)
             .anyRequest().authenticated()
 
@@ -46,7 +49,6 @@ class SecurityConfig(
             .logoutSuccessUrl("/login")
             .deleteCookies("JSESSIONID")
             .invalidateHttpSession(true)
-            .permitAll()
     }
 
     @Throws(Exception::class)
