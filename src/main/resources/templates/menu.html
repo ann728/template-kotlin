@@ -1,10 +1,16 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{common/layout::layout(~{::title}, ~{}, ~{::body/content()})}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
     <title>メニュー</title>
 </head>
 <body>
-bbb
+    <div class="container">
+        <span sec:authentication="principal.username"></span>さんログイン中
+        <a class="btn btn-primary" href="/">トップ</a>
+        <a class="btn btn-primary" href="/logout">ログアウト</a>
+    </div>
 </body>
 </html>
