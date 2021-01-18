@@ -18,6 +18,12 @@ repositories {
 }
 
 dependencies {
+    val domaSpringVersion = "1.5.0"
+    val domaVersion = "2.44.3"
+    val jqueryVersion = "3.5.1"
+    val bootstrapVersion = "4.5.3"
+    val fontAwesomeVersion = "5.15.1"
+
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -38,18 +44,18 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // Spring x Doma
-    implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.5.0")
+    implementation("org.seasar.doma.boot:doma-spring-boot-starter:${domaSpringVersion}")
     // Doma
-    kapt("org.seasar.doma:doma-processor:2.44.3")
-    implementation("org.seasar.doma:doma-kotlin:2.44.3")
+    kapt("org.seasar.doma:doma-processor:${domaVersion}")
+    implementation("org.seasar.doma:doma-kotlin:${domaVersion}")
 
     // PostgewSQL
     implementation("org.postgresql:postgresql")
 
     // Webjars
-    implementation("org.webjars:jquery:3.5.1")
-    implementation("org.webjars:bootstrap:4.5.3")
-    implementation("org.webjars:font-awesome:5.15.1")
+    implementation("org.webjars:jquery:${jqueryVersion}")
+    implementation("org.webjars:bootstrap:${bootstrapVersion}")
+    implementation("org.webjars:font-awesome:${fontAwesomeVersion}")
 }
 
 tasks.withType<KotlinCompile> {

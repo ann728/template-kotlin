@@ -7,9 +7,6 @@ spring:
     username: root
     password: password
     driverClassName: org.postgresql.Driver
-  devtools:
-    restart:
-      enabled
 
 logging:
   level:
