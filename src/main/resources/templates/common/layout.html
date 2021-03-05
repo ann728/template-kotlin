@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(title, links, contents)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex">
+    <meta name="viewport" content="width=device-width, height=device-height">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="format-detection" content="telephone=no">
+    <title th:replace="${title}">Title</title>
+
+    <link th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/webjars/font-awesome/5.15.1/css/all.min.css}" rel="stylesheet" />
+
+    <th:block th:replace="${links}"/>
+</head>
+<body>
+    <div th:replace="~{common/header::header}"></div>
+    <div th:replace="${contents}"></div>
+    <div th:replace="~{common/footer::footer}"></div>
+
+    <script th:src="@{/webjars/jquery/3.5.1/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/4.5.3/js/bootstrap.min.js}"></script>
+</body>
+</html>
