@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.support.ResourceBundleMessageSource
 import org.springframework.core.io.ClassPathResource
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean
 import java.io.IOException
 import java.util.*
 
@@ -26,5 +27,12 @@ class MessageConfig {
         val messageSource = ResourceBundleMessageSource()
         messageSource.setCommonMessages(yamlProperties())
         return messageSource
+    }
+
+    @Bean
+    fun localValidatorFactoryBean(): LocalValidatorFactoryBean? {
+        val localValidatorFactoryBean = LocalValidatorFactoryBean()
+        localValidatorFactoryBean.setValidationMessageSource(messageSource()!!)
+        return localValidatorFactoryBean
     }
 }
