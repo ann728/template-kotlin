@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("org.flywaydb.flyway") version "6.2.2"
+
 
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -52,6 +54,9 @@ dependencies {
     // PostgewSQL
     implementation("org.postgresql:postgresql")
 
+    //flyway
+    implementation("org.flywaydb:flyway-core")
+
     // Webjars
     implementation("org.webjars:jquery:${jqueryVersion}")
     implementation("org.webjars:bootstrap:${bootstrapVersion}")
@@ -67,4 +72,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+flyway {
+    url = "jdbc:postgresql://192.168.0.113:5432/kotlin"
+    user = "root"
+    password = "password"
 }
