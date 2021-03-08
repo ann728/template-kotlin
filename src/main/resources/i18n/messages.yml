@@ -1,3 +1,12 @@
 ## spring-security-core-5.4.2.jar!/org/springframework/security/messages.properties
 AbstractUserDetailsAuthenticationProvider.badCredentials: 入力されたログインID、パスワードは不正です
 ConcurrentSessionControlAuthenticationStrategy.exceededAllowed: 最大セッション数の{0}を超えました
+
+##validation
+javax:
+  validation:
+    constraints:
+      NotBlank:
+        message: "{0}は必須項目です。必ず入力してください。"
+      Size:
+        message: "{0}の文字数は{min}以上{max}以下で入力してください。"
