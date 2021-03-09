@@ -1,8 +1,28 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+//使用するapplication.ymlの設定("dev"の場合"-dev"と指定)
+val propertiesFileSuffix = "-dev"
+val propertiesFile = File("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml").inputStream()
+val applicationProperties: Map<String, Any> = org.yaml.snakeyaml.Yaml().load(propertiesFile) ?: throw IllegalArgumentException()
+
+buildscript {
+    val postgresqlVersion = "42.2.19"
+    val snakeyamlVersion = "1.28"
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.postgresql:postgresql:$postgresqlVersion")
+        classpath("org.yaml:snakeyaml:$snakeyamlVersion")
+    }
+}
+
+
 plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("org.seasar.doma.codegen") version "1.2.1"
+    id("org.seasar.doma.compile") version "1.1.0"
 
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -56,6 +76,23 @@ dependencies {
     implementation("org.webjars:jquery:${jqueryVersion}")
     implementation("org.webjars:bootstrap:${bootstrapVersion}")
     implementation("org.webjars:font-awesome:${fontAwesomeVersion}")
+}
+
+val springProperties = applicationProperties["spring"] as Map<*, *>
+val datasource = springProperties["datasource"] as Map<*, *>
+domaCodeGen {
+    register("dev") {
+        url.set(datasource["url"] as String)
+        user.set(datasource["username"] as String)
+        password.set(datasource["password"] as String)
+        languageType.set(org.seasar.doma.gradle.codegen.desc.LanguageType.KOTLIN)
+        entity {
+            packageName.set("jp.co.casareal.kotlin.entity") //entityパッケージ
+        }
+        dao {
+            packageName.set("jp.co.casareal.kotlin.dao") //daoパッケージ
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
