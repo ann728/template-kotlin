@@ -1,5 +1,22 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+
+//使用するapplication.ymlの設定("dev"の場合"-dev"と指定)
+val propertiesFileSuffix = "-dev"
+val propertiesFile = File("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml").inputStream()
+val applicationProperties: Map<String, Any> = org.yaml.snakeyaml.Yaml().load(propertiesFile) ?: throw IllegalArgumentException()
+
+buildscript {
+    val snakeyamlVersion = "1.28"
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.yaml:snakeyaml:$snakeyamlVersion")
+    }
+}
+
+
 plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
@@ -77,8 +94,9 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
+val flywayProperties = applicationProperties["flyway"] as Map<*, *>
 flyway {
-    url = "jdbc:postgresql://192.168.0.113:5432/kotlin"
-    user = "root"
-    password = "password"
+    url = flywayProperties["url"] as String
+    user = flywayProperties["user"] as String
+    password = flywayProperties["password"] as String
 }
