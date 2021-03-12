@@ -2,19 +2,30 @@ package jp.co.casareal.kotlin.entity
 
 import org.seasar.doma.Column
 import org.seasar.doma.Entity
+import org.seasar.doma.Id
+import org.seasar.doma.Metamodel
 import org.seasar.doma.Table
 
-@Entity(immutable = true)
+/**
+ */
+@Entity(listener = UsersListener::class, metamodel = Metamodel())
 @Table(name = "users")
-class Users (
+class Users : AbstractUsers() {
 
+    /** */
+    @Id
     @Column(name = "login_user")
-    val loginUser: String,
+    var loginUser: String? = null
 
-    val password: String,
+    /** */
+    @Column(name = "password")
+    var password: String? = null
 
-    val name: String,
+    /** */
+    @Column(name = "name")
+    var name: String? = null
 
+    /** */
     @Column(name = "role_cd")
-    val roleCd: String
-)
+    var roleCd: String? = null
+}

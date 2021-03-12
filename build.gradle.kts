@@ -22,6 +22,8 @@ plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("factlin")
+    id("org.seasar.doma.codegen") version "1.2.1"
+    id("org.seasar.doma.compile") version "1.1.0"
 
     kotlin("jvm") version "1.4.21"
     kotlin("plugin.spring") version "1.4.21"
@@ -94,6 +96,21 @@ factlin {
     fixtureOutputDir = "src/test/kotlin/jp/co/casareal/kotlin/fixtures"
     fixturePackageName = "jp.co.casareal.kotlin.fixtures"
     cleanOutputDir = true
+}
+
+domaCodeGen {
+    register("dev") {
+        url.set(datasource["url"] as String)
+        user.set(datasource["username"] as String)
+        password.set(datasource["password"] as String)
+        languageType.set(org.seasar.doma.gradle.codegen.desc.LanguageType.KOTLIN)
+        entity {
+            packageName.set("jp.co.casareal.kotlin.entity") //entityパッケージ
+        }
+        dao {
+            packageName.set("jp.co.casareal.kotlin.dao") //daoパッケージ
+        }
+    }
 }
 
 tasks.withType<KotlinCompile> {
