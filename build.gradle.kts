@@ -1,29 +1,26 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 //使用するapplication.ymlの設定("dev"の場合"-dev"と指定)
 val propertiesFileSuffix = "-dev"
 val propertiesFile = File("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml").inputStream()
 val applicationProperties: Map<String, Any> = org.yaml.snakeyaml.Yaml().load(propertiesFile) ?: throw IllegalArgumentException()
 
 buildscript {
-
     val postgresqlVersion = "42.2.19"
     val snakeyamlVersion = "1.28"
     repositories {
         mavenCentral()
     }
     dependencies {
-
         classpath("org.postgresql:postgresql:$postgresqlVersion")
         classpath("org.yaml:snakeyaml:$snakeyamlVersion")
     }
 }
 
-
 plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
+    id("factlin")
     id("org.flywaydb.flyway") version "6.2.2"
     id("org.seasar.doma.codegen") version "1.2.1"
     id("org.seasar.doma.compile") version "1.1.0"
@@ -47,6 +44,7 @@ dependencies {
     val jqueryVersion = "3.5.1"
     val bootstrapVersion = "4.5.3"
     val fontAwesomeVersion = "5.15.1"
+    val dbSetupVersion = "2.1.0"
 
     // Spring
     implementation("org.springframework.boot:spring-boot-starter-web")
@@ -86,10 +84,23 @@ dependencies {
     implementation("org.webjars:jquery:${jqueryVersion}")
     implementation("org.webjars:bootstrap:${bootstrapVersion}")
     implementation("org.webjars:font-awesome:${fontAwesomeVersion}")
+
+    //DbSetup
+    implementation("com.ninja-squad:DbSetup-kotlin:${dbSetupVersion}")
 }
 
 val springProperties = applicationProperties["spring"] as Map<*, *>
 val datasource = springProperties["datasource"] as Map<*, *>
+factlin {
+    dbUrl = datasource["url"] as String
+    dbUser = datasource["username"] as String
+    dbPassword = datasource["password"] as String
+    dbDialect = "postgres"
+    fixtureOutputDir = "src/test/kotlin/jp/co/casareal/kotlin/fixtures"
+    fixturePackageName = "jp.co.casareal.kotlin.fixtures"
+    cleanOutputDir = true
+}
+
 domaCodeGen {
     register("dev") {
         url.set(datasource["url"] as String)
@@ -105,6 +116,13 @@ domaCodeGen {
     }
 }
 
+val flywayProperties = applicationProperties["flyway"] as Map<*, *>
+flyway {
+    url = flywayProperties["url"] as String
+    user = flywayProperties["user"] as String
+    password = flywayProperties["password"] as String
+}
+
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
@@ -114,11 +132,4 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
-}
-
-val flywayProperties = applicationProperties["flyway"] as Map<*, *>
-flyway {
-    url = flywayProperties["url"] as String
-    user = flywayProperties["user"] as String
-    password = flywayProperties["password"] as String
 }
