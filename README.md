@@ -50,3 +50,15 @@ https://doma.readthedocs.io/en/2.6.0/entity/#id3
 
 使用しない場合は  
 @Entity内の`listener = IndexListener::class`を削除してください
+
+## 単体テスト用のデータ生成について
+テスト用データ生成ライブラリDbSetupおよび補助プラグインのfactlinを実装しています。
+
+### factlinを使用したfixtureクラスの生成
+gladleタスクfactlinを動かすと接続されたDBのスキーマーから  
+src/test/kotlin/jp/co/casareal/kotlin/fixturesにfixturesクラスが自動生成されます。  
+接続先DBを変えたい場合、生成先のフォルダを変えたい場合はbuild.gradle.ktsを編集してください。  
+
+### DbSetupによるテストデータ生成
+テストフォルダ内のjp.co.casareal.kotlin.daoimplにあるクラスに実装例があります  
+そちらを参照してください。
