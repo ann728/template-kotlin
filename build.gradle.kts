@@ -1,6 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-
 //使用するapplication.ymlの設定("dev"の場合"-dev"と指定)
 val propertiesFileSuffix = "-dev"
 val propertiesFile = File("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml").inputStream()
@@ -22,6 +21,7 @@ plugins {
     id("org.springframework.boot") version "2.4.1"
     id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("factlin")
+    id("org.flywaydb.flyway") version "6.2.2"
     id("org.seasar.doma.codegen") version "1.2.1"
     id("org.seasar.doma.compile") version "1.1.0"
 
@@ -77,6 +77,9 @@ dependencies {
     // PostgewSQL
     implementation("org.postgresql:postgresql")
 
+    //flyway
+    implementation("org.flywaydb:flyway-core")
+
     // Webjars
     implementation("org.webjars:jquery:${jqueryVersion}")
     implementation("org.webjars:bootstrap:${bootstrapVersion}")
@@ -111,6 +114,13 @@ domaCodeGen {
             packageName.set("jp.co.casareal.kotlin.dao") //daoパッケージ
         }
     }
+}
+
+val flywayProperties = applicationProperties["flyway"] as Map<*, *>
+flyway {
+    url = flywayProperties["url"] as String
+    user = flywayProperties["user"] as String
+    password = flywayProperties["password"] as String
 }
 
 tasks.withType<KotlinCompile> {
