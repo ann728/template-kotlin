@@ -12,6 +12,6 @@ class IndexService(private val indexDao: IndexDao) {
 
     fun index() : String {
         logger.debug("### test2")
-        return indexDao.index()
+        return indexDao.selectById(1).name?:"";
     }
 }

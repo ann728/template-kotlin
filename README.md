@@ -24,3 +24,29 @@ Active Profileに「dev」を入力してください。
   * 全ユーザアクセス可
 * http://localhost/menu
   * 管理ユーザのみアクセス可
+  
+
+## DAOとEntityクラスの自動生成
+* Daoを自動生成するので独自のSQL文を実装させたい場合は新しくDaoを定義してください。
+* 以下のパッケージ、ディレクトリにファイルを生成します。
+  * jp.co.casareal.kotlin.entity
+  * jp.co.casareal.kotlin.dao（対応するテストパッケージも含む）
+  * resources\META-INF\jp\co\casareal\kotlin\dao
+  
+
+Gradleタスクの**domaCodeGenDevAll**を使用するとデータベースのスキーマからDAOとEntityを作成します。  
+他の場所に生成させたい場合はbuild.gradle.ktsのdomaCodeGenのタスク内で出力先を変更することができます。
+
+### 生成されたDaoファイルの注意点
+doma-spring-boot-starterに準拠する **@ConfigAutowireableは自動生成されません。**  
+オプションでの設定もありませんでした。  
+Gradleタスクで生成したDaoに付与させるプログラムを組み込むか、  
+生成されたDaoファイルに@ConfigAutowireableを付与して使用してください。
+
+### 生成されるEntityListenerクラスについて
+>エンティティがデータベースに対し挿入、更新、削除される直前/直後に処理を実行したい場合、 @Entity の listener 要素に EntityListener の実装クラスを指定できます。
+
+https://doma.readthedocs.io/en/2.6.0/entity/#id3
+
+使用しない場合は  
+@Entity内の`listener = IndexListener::class`を削除してください
