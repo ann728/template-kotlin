@@ -24,7 +24,14 @@ Active Profileに「dev」を入力してください。
   * 全ユーザアクセス可
 * http://localhost/menu
   * 管理ユーザのみアクセス可
-  
+
+## DBのマイグレーション
+* flywayを使用してDBのマイグレーションを行っています。
+* 以下のディレクトリのファイルを使用しています。
+  * main\resources\db\migration
+* 初回起動時は空のDBを使用または、gradleタスク「flywayClean」を動かしてDBを空にしてください。
+* データやスキーマを追加する際はmigrationフォルダにSQLファイルを追加してください。
+
 
 ## DAOとEntityクラスの自動生成
 * Daoを自動生成するので独自のSQL文を実装させたい場合は新しくDaoを定義してください。
