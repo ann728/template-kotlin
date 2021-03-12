@@ -1,15 +1,39 @@
 package jp.co.casareal.kotlin.dao
 
-import org.seasar.doma.Dao
-import org.seasar.doma.Select
-import org.seasar.doma.Sql
+import jp.co.casareal.kotlin.entity.Index
+import org.seasar.doma.*
 import org.seasar.doma.boot.ConfigAutowireable
-
+/**
+ */
 @Dao
 @ConfigAutowireable
 interface IndexDao {
 
+    /**
+     * @param id
+     * @return the Index entity
+     */
     @Select
-    @Sql("select name from index where id=1")
-    fun index(): String
+    fun selectById(id: Int): Index
+
+    /**
+     * @param entity
+     * @return affected rows
+     */
+    @Insert
+    fun insert(entity: Index): Int
+
+    /**
+     * @param entity
+     * @return affected rows
+     */
+    @Update
+    fun update(entity: Index): Int
+
+    /**
+     * @param entity
+     * @return affected rows
+     */
+    @Delete
+    fun delete(entity: Index): Int
 }

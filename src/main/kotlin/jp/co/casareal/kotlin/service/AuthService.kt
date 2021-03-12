@@ -21,13 +21,13 @@ class AuthService(
             throw Exception("")
         }
 
-        val users = usersDao.findByLoginUser(username) ?: throw  UsernameNotFoundException("not found")
+        val users = usersDao.selectById(username) ?: throw  UsernameNotFoundException("not found")
 
         return UsersDto(
-            users.loginUser,
-            users.name,
-            users.password,
-            users.roleCd
+            users.loginUser?:"",
+            users.name?:"",
+            users.password?:"",
+            users.roleCd?:""
         )
     }
 }
