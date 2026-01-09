@@ -2,7 +2,6 @@ package jp.co.casareal.kotlin.daoimpl
 
 import com.ninja_squad.dbsetup.destination.DriverManagerDestination
 import com.ninja_squad.dbsetup_kotlin.dbSetup
-import jp.co.casareal.kotlin.dao.UsersDao
 import jp.co.casareal.kotlin.fixtures.UsersFixture
 import jp.co.casareal.kotlin.fixtures.insertUsersFixture
 import org.junit.jupiter.api.*

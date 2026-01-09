@@ -1,4 +1,4 @@
-rootProject.name = "kotlin"
+rootProject.name = "template-kotlin"
 pluginManagement {
     val factlinVersion = "0.1.1"
     repositories {

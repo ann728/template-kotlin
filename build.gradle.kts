@@ -1,135 +1,115 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.yaml.snakeyaml.Yaml
+import java.io.File
 
-//使用するapplication.ymlの設定("dev"の場合"-dev"と指定)
+
 val propertiesFileSuffix = "-dev"
-val propertiesFile = File("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml").inputStream()
-val applicationProperties: Map<String, Any> = org.yaml.snakeyaml.Yaml().load(propertiesFile) ?: throw IllegalArgumentException()
+val propertiesFile =
+    file("$projectDir/src/main/resources/config/application$propertiesFileSuffix.yml")
 
-buildscript {
-    val postgresqlVersion = "42.2.19"
-    val snakeyamlVersion = "1.28"
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.postgresql:postgresql:$postgresqlVersion")
-        classpath("org.yaml:snakeyaml:$snakeyamlVersion")
-    }
-}
+val applicationProperties: Map<String, Any> =
+    Yaml().load(propertiesFile.inputStream())
+        ?: error("application-dev.yml を読み込めません")
+
+val springProperties =
+    applicationProperties["spring"] as? Map<*, *>
+        ?: error("spring が見つかりません")
+
+val datasource =
+    springProperties["datasource"] as? Map<*, *>
+        ?: error("spring.datasource が見つかりません")
+
+val flywayProperties =
+    applicationProperties["flyway"] as? Map<*, *>
+        ?: error("flyway が見つかりません")
+
 
 plugins {
-    id("org.springframework.boot") version "2.4.1"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
-    id("factlin")
-    id("org.flywaydb.flyway") version "6.2.2"
-    id("org.seasar.doma.codegen") version "1.2.1"
-    id("org.seasar.doma.compile") version "1.1.0"
+    id("org.springframework.boot") version "2.7.18"
+    id("io.spring.dependency-management") version "1.1.4"
 
-    kotlin("jvm") version "1.4.21"
-    kotlin("plugin.spring") version "1.4.21"
-    kotlin("kapt") version "1.3.61"
+    id("org.flywaydb.flyway") version "9.22.3"
+
+    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.spring") version "1.9.23"
+    kotlin("kapt") version "1.9.23"
 }
 
 group = "jp.co.casareal"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
 
-repositories {
-    mavenCentral()
-}
 
-dependencies {
-    val domaSpringVersion = "1.5.0"
-    val domaVersion = "2.44.3"
-    val jqueryVersion = "3.5.1"
-    val bootstrapVersion = "4.5.3"
-    val fontAwesomeVersion = "5.15.1"
-    val dbSetupVersion = "2.1.0"
-
-    // Spring
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-
-    // Validation
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-
-    // json
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    // Thymeleaf
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.4.1")
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
-
-    // Spring Security
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.security:spring-security-test")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-
-    // Spring x Doma
-    implementation("org.seasar.doma.boot:doma-spring-boot-starter:${domaSpringVersion}")
-    // Doma
-    kapt("org.seasar.doma:doma-processor:${domaVersion}")
-    implementation("org.seasar.doma:doma-kotlin:${domaVersion}")
-
-    // PostgewSQL
-    implementation("org.postgresql:postgresql")
-
-    //flyway
-    implementation("org.flywaydb:flyway-core")
-
-    // Webjars
-    implementation("org.webjars:jquery:${jqueryVersion}")
-    implementation("org.webjars:bootstrap:${bootstrapVersion}")
-    implementation("org.webjars:font-awesome:${fontAwesomeVersion}")
-
-    //DbSetup
-    implementation("com.ninja-squad:DbSetup-kotlin:${dbSetupVersion}")
-}
-
-val springProperties = applicationProperties["spring"] as Map<*, *>
-val datasource = springProperties["datasource"] as Map<*, *>
-factlin {
-    dbUrl = datasource["url"] as String
-    dbUser = datasource["username"] as String
-    dbPassword = datasource["password"] as String
-    dbDialect = "postgres"
-    fixtureOutputDir = "src/test/kotlin/jp/co/casareal/kotlin/fixtures"
-    fixturePackageName = "jp.co.casareal.kotlin.fixtures"
-    cleanOutputDir = true
-}
-
-domaCodeGen {
-    register("dev") {
-        url.set(datasource["url"] as String)
-        user.set(datasource["username"] as String)
-        password.set(datasource["password"] as String)
-        languageType.set(org.seasar.doma.gradle.codegen.desc.LanguageType.KOTLIN)
-        entity {
-            packageName.set("jp.co.casareal.kotlin.entity") //entityパッケージ
-        }
-        dao {
-            packageName.set("jp.co.casareal.kotlin.dao") //daoパッケージ
-        }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
-}
-
-val flywayProperties = applicationProperties["flyway"] as Map<*, *>
-flyway {
-    url = flywayProperties["url"] as String
-    user = flywayProperties["user"] as String
-    password = flywayProperties["password"] as String
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "21"
+        freeCompilerArgs += "-Xjsr305=strict"
     }
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+    val domaSpringVersion = "1.5.0"
+    val domaVersion = "2.44.3"
+
+    // Spring
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    // JSON
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    // Spring Security（template-kotlin 既存）
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.security:spring-security-test")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
+
+    // Doma
+    implementation("org.seasar.doma.boot:doma-spring-boot-starter:$domaSpringVersion")
+    implementation("org.seasar.doma:doma-kotlin:$domaVersion")
+    kapt("org.seasar.doma:doma-processor:$domaVersion")
+
+    // PostgreSQL
+    implementation("org.postgresql:postgresql")
+
+    // Flyway（Gradle + Spring 両対応）
+    implementation("org.flywaydb:flyway-core")
+}
+
+
+flyway {
+    url = flywayProperties["url"] as String
+    user = flywayProperties["user"] as String
+    password = flywayProperties["password"] as String
+    schemas = arrayOf(flywayProperties["schemas"] as String)
+    locations = arrayOf(flywayProperties["locations"] as String)
+}
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.yaml:snakeyaml:2.2")
+    }
+}
+
