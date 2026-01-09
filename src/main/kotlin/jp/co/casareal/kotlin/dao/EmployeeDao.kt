@@ -6,8 +6,10 @@ import org.seasar.doma.Delete
 import org.seasar.doma.Insert
 import org.seasar.doma.Select
 import org.seasar.doma.Update
+import org.springframework.stereotype.Repository
 
 @Dao
+@Repository
 interface EmployeeDao {
     @Select
     fun selectAll(): List<Employee>

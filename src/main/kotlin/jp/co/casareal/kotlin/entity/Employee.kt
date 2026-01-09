@@ -1,4 +1,5 @@
 package jp.co.casareal.kotlin.entity
+
 import org.seasar.doma.Entity
 import org.seasar.doma.Id
 import org.seasar.doma.GeneratedValue
@@ -7,26 +8,21 @@ import org.seasar.doma.Column
 import java.time.LocalDate
 
 @Entity(immutable = true)
-class Employee {
+data class Employee(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int? = null,
 
-    @Entity(immutable = true)
-    data class Employee(
+    val name: String,
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Int? = null,
+    @Column(name = "joined_date")
+    val joinedDate: LocalDate,
 
-        val name: String,
+    @Column(name = "department_name")
+    val departmentName: String,
 
-        @Column(name = "joined_date")
-        val joinedDate: LocalDate,
+    val email: String,
 
-        @Column(name = "department_name")
-        val departmentName: String,
-
-        val email: String,
-
-        @Column(name = "birth_day")
-        val birthDay: LocalDate
-    )
-}
+    @Column(name = "birth_day")
+    val birthDay: LocalDate
+)
