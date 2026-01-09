@@ -6,4 +6,4 @@ SELECT
     email,
     birth_day
 FROM employee
-ORDER BY id
+WHERE id = /* id */0

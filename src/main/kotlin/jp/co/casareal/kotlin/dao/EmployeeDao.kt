@@ -22,5 +22,5 @@ interface EmployeeDao {
     fun update(employee: Employee): Int
 
     @Delete
-    fun delete(employee: Employee): Int
+    fun deleteById(id: Int): Int
 }
