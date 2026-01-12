@@ -1,7 +1,7 @@
 package jp.co.casareal.kotlin.service
 import jp.co.casareal.kotlin.entity.Employee
 
-interface EmployeeService {
+public interface EmployeeService {
     fun findAll(): List<Employee>
 
     fun findById(id: Int): Employee

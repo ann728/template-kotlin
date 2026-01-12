@@ -1,3 +1,5 @@
+package jp.co.casareal.kotlin.service.impl
+
 import jp.co.casareal.kotlin.dao.EmployeeDao
 import jp.co.casareal.kotlin.entity.Employee
 import jp.co.casareal.kotlin.service.EmployeeService
@@ -44,7 +46,7 @@ class EmployeeServiceImpl(
     override fun deleteById(id: Int) {
         val count = employeeDao.deleteById(id);
         if (count <= 0) {
-            throw IllegalStateException("更新対象が存在しません")
+            throw IllegalStateException("削除対象が存在しません ")
         }
     }
 }
