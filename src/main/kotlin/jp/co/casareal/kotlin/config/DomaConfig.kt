@@ -23,8 +23,5 @@ class DomaConfig {
     fun dialect(): Dialect {
         return PostgresDialect()
     }
-    @Bean
-    fun employeeDao(config: Config): EmployeeDao {
-        return EmployeeDaoImpl(config)
-    }
+
 }

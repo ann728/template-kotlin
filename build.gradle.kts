@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.yaml.snakeyaml.Yaml
-import java.io.File
+
 
 
 val propertiesFileSuffix = "-dev"
@@ -111,7 +111,7 @@ buildscript {
     }
 }
 tasks.withType<ProcessResources> {
-    duplicatesStrategy = DuplicatesStrategy.INCLUDE // または DuplicatesStrategy.EXCLUDE
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 kapt {
