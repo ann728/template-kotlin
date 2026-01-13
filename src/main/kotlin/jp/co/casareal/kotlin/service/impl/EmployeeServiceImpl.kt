@@ -36,17 +36,20 @@ class EmployeeServiceImpl(
         val id = employee.id
             ?: throw IllegalArgumentException("更新時にIDは必須です")
 
-        val count = employeeDao.update(employee)
-        if (count <= 0) {
+
+        val result = employeeDao.update(employee)
+        if (result.count <= 0) {
             throw IllegalStateException("更新対象が存在しません")
         }
     }
 
     @Transactional
     override fun deleteById(id: Int) {
-        val count = employeeDao.deleteById(id);
+
+        val count = employeeDao.deleteById(id)
         if (count <= 0) {
             throw IllegalStateException("削除対象が存在しません ")
         }
     }
+
 }

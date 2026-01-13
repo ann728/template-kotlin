@@ -7,6 +7,7 @@ import org.seasar.doma.Insert
 import org.seasar.doma.Select
 import org.seasar.doma.Update
 import org.springframework.stereotype.Repository
+import org.seasar.doma.jdbc.Result
 
 @Dao
 @Repository
@@ -18,11 +19,11 @@ interface EmployeeDao {
     fun selectById(id: Int): Employee?
 
     @Insert
-    fun insert(employee: Employee): Int
+    fun insert(employee: Employee): Result<Employee>
 
     @Update
-    fun update(employee: Employee): Int
+    fun update(employee: Employee): Result<Employee>
 
-    @Delete
+    @Delete(sqlFile = true)
     fun deleteById(id: Int): Int
 }

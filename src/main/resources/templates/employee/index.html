@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>一覧画面</title>
-    <link rel="stylesheet" href="../../static/css/style.css"
-          th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <h1>社員一覧</h1>
@@ -32,24 +31,6 @@
         <td th:text="*{email}">taro@example.com</td>
         <td th:text="*{birthDay}">1980-01-01</td>
     </tr>
-    <!--/*-->
-    <tr>
-        <td><a href="findById.html">222</a></td>
-        <td>鈴木二郎</td>
-        <td>2000-01-02</td>
-        <td>開発部</td>
-        <td>jiro@example.com</td>
-        <td>1980-01-02</td>
-    </tr>
-    <tr>
-        <td><a href="findById.html">333</a></td>
-        <td>鈴木三郎</td>
-        <td>2000-01-03</td>
-        <td>管理部</td>
-        <td>saburo@example.com</td>
-        <td>1980-01-03</td>
-    </tr>
-    <!--*/-->
 </table>
 </body>
 </html>

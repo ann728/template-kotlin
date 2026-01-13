@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>社員情報更新画面</title>
+    <link rel="stylesheet" href="../../static/css/style.css"
+          th:href="@{/css/style.css}">
+    <style>
+        .error {
+            color: red;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body style="max-width: 500px">
+<h1>社員情報 更新</h1>
+<p>
+    <a href="index.html" th:href="@{index}">社員一覧へ</a>
+</p>
+
+<form method="post" th:action="@{updateComplete}" th:object="${employeeForm}">
+
+    <input type="hidden" th:field="*{id}">
+
+    <table style="margin: auto; border-collapse: collapse;" border="1">
+        <tr>
+            <th>ID</th>
+            <td th:text="${employeeId}">111(ダミー)</td>
+        </tr>
+        <tr>
+            <th>氏名</th>
+            <td>
+                <input type="text" th:field="*{name}">
+                <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error">エラーメッセージ</div>
+            </td>
+        </tr>
+        <tr>
+            <th>入社年月日</th>
+            <td>
+                <input type="date" th:field="*{joinedDate}">
+                <div th:if="${#fields.hasErrors('joinedDate')}" th:errors="*{joinedDate}" class="error">エラーメッセージ</div>
+            </td>
+        </tr>
+        <tr>
+            <th>部署名</th>
+            <td>
+                <input type="text" th:field="*{departmentName}">
+                <div th:if="${#fields.hasErrors('departmentName')}" th:errors="*{departmentName}" class="error">エラーメッセージ</div>
+            </td>
+        </tr>
+        <tr>
+            <th>メールアドレス</th>
+            <td>
+                <input type="text" th:field="*{email}">
+                <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">エラーメッセージ</div>
+            </td>
+        </tr>
+        <tr>
+            <th>誕生日</th>
+            <td>
+                <input type="date" th:field="*{birthDay}">
+                <div th:if="${#fields.hasErrors('birthDay')}" th:errors="*{birthDay}" class="error">エラーメッセージ</div>
+            </td>
+        </tr>
+    </table>
+
+    <p style="text-align: center; margin-top: 20px;">
+        上記の内容で更新します。よろしいですか？<br><br>
+        <button type="submit">はい、更新します</button>
+    </p>
+</form>
+
+</body>
+</html>

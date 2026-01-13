@@ -8,29 +8,41 @@ import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
 
 data class EmployeeForm(
+    val id: Int? = null,
 
-    @field:NotBlank
+    @field:NotBlank(message = "氏名を入力してください")
     val name: String? = null,
 
-    @field:NotNull
+    @field:NotNull(message = "入社年月日を選択してください")
     @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     val joinedDate: LocalDate? = null,
 
-    @field:NotBlank
+    @field:NotBlank(message = "部署名を入力してください")
     val departmentName: String? = null,
 
-    @field:NotBlank
-    @field:Email
+    @field:NotBlank(message = "メールアドレスを入力してください")
+    @field:Email(message = "メールアドレスの形式が正しくありません")
     val email: String? = null,
 
-    @field:NotNull
+    @field:NotNull(message = "誕生日を選択してください")
     @field:DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     val birthDay: LocalDate? = null
 ) {
-    /** Form → Entity 変換 */
+    companion object {
+        fun fromEntity(e: Employee): EmployeeForm {
+            return EmployeeForm(
+                id = e.id,
+                name = e.name,
+                joinedDate = e.joinedDate,
+                departmentName = e.departmentName,
+                email = e.email,
+                birthDay = e.birthDay
+            )
+        }
+    }
     fun toEntity(): Employee =
         Employee(
-            id = null,
+            id = this.id,
             name = name!!,
             joinedDate = joinedDate!!,
             departmentName = departmentName!!,

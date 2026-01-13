@@ -78,11 +78,6 @@ dependencies {
     // JSON
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
-    // Spring Security（template-kotlin 既存）
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.security:spring-security-test")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
-
     // Doma
     implementation("org.seasar.doma.boot:doma-spring-boot-starter:$domaSpringVersion")
     implementation("org.seasar.doma:doma-kotlin:$domaVersion")
@@ -93,6 +88,9 @@ dependencies {
 
     // Flyway（Gradle + Spring 両対応）
     implementation("org.flywaydb:flyway-core")
+
+
+
 }
 
 
@@ -112,4 +110,20 @@ buildscript {
         classpath("org.yaml:snakeyaml:2.2")
     }
 }
+tasks.withType<ProcessResources> {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE // または DuplicatesStrategy.EXCLUDE
+}
+
+kapt {
+    arguments {
+        arg("doma.resources.dir", file("src/main/resources"))
+        arg("doma.kotlin.enabled", "true")
+    }
+}
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/source/kapt/main")
+    }
+}
+
 
