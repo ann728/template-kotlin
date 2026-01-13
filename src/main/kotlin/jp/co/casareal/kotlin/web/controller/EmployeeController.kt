@@ -57,11 +57,19 @@ class EmployeeController(
     }
 
 
-    @PostMapping("/delete")
+    @PostMapping("/deleteComplete")
     fun delete(@RequestParam id: Int): String {
         employeeService.deleteById(id)
         return "redirect:/employee/index"
     }
+
+    @GetMapping("/deleteConfirm")
+    fun deleteConfirm(@RequestParam id: Int, model: Model): String {
+        val employee = employeeService.findById(id)
+        model.addAttribute("employee", employee)
+        return "employee/deleteConfirm"
+    }
+
     @GetMapping("/updateMain")
     fun updateMain(
         @RequestParam id: Int,
@@ -69,7 +77,6 @@ class EmployeeController(
     ): String {
         val employee = employeeService.findById(id)
 
-        // EntityからFormへ変換
         val employeeForm = EmployeeForm.fromEntity(employee)
 
         model.addAttribute("employeeForm", employeeForm)
